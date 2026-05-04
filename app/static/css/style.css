@@ -1,0 +1,34 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0d0d1a;
+    color: #f0e6ff;
+    font-family: 'Georgia', serif;
+    min-height: 100vh;
+}
+
+.landing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.landing h1 {
+    font-size: 3rem;
+    letter-spacing: 4px;
+    margin-bottom: 1rem;
+    color: #c9b8ff;
+}
+
+.landing p {
+    font-size: 1.2rem;
+    color: #9980c9;
+    letter-spacing: 2px;
+}
