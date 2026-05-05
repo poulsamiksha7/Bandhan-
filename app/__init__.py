@@ -18,10 +18,11 @@ def create_app():
 
     login_manager.login_view = 'auth.login'
 
-    # ADD THESE 3 LINES — temporary until Day 2 models are ready
+    from app.models import CoupleProfile
+
     @login_manager.user_loader
     def load_user(user_id):
-        return None
+        return CoupleProfile.query.get(int(user_id))
 
     from app.routes.auth import auth
     from app.routes.memory import memory
