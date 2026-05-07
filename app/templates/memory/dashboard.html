@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>🌙{{couple.bride_name}} & {{couple.groom_name}}</h1>
+        <p>{{couple.their_story}}</p>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="memory-grid">
+        <div class="memory-card coming-soon">
+            <span class="card-icon">🌙</span>
+            <h3>Moon Memory</h3>
+            <p>Coming Soon</p>
+        </div>
+
+        <div class="memory-card coming-soon">
+            <span class="card-icon">🎵</span>
+            <h3>Song Dedication</h3>
+            <p>Coming Soon</p>
+        </div>
+        <div class="memory-card coming-soon">
+            <span class="card-icon">📖</span>
+            <h3>Book of Your Month</h3>
+            <p>Coming Soon</p>
+        </div>
+        <div class="memory-card coming-soon">
+            <span class="card-icon">💌</span>
+            <h3>Private Journal</h3>
+            <p>Coming Soonz</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

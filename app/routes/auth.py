@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, logout_user, login_required, current_user
 from app import db
 from app.models import CoupleProfile
 
@@ -62,6 +63,37 @@ def register():
     #GET request= just to show form
     return render_template('auth/register.html')
 
-@auth.route('/login')
+@auth.route('/login', methods=['GET','POST'])
 def login():
+    # if already logged in send to dashboard
+    if current_user.is_authenticated:
+        return redirect(url_for('memory.dashboaed'))
+    
+    if request.method=='POST':
+        email= request.form.get('email')
+        password=request.form.get('password')
+        #find couple by email
+        couple=CoupleProfile.query.filter_by(email=email).first()
+        #Wrong email
+        if not couple:
+            flash('No account found with this email.','error')
+            return redirect(url_for('auth.login'))
+        
+        # wrong password
+        if not check_password_hash(couple.password,password):
+            flash('Incorrect passoword. Try again','error')
+            return redirect(url_for('auth.login'))
+        
+        #correct- log them in
+
+        login_user(couple)
+        flash(f'Welcome back, {couple.bride_name} & {couple.groom_name} 🌙','success')
+        return redirect(url_for('memory.dashboard'))
     return render_template('auth/login.html')
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out','success')
+    return redirect(url_for('auth.login'))
