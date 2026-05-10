@@ -20,6 +20,7 @@ class MoonMemory(db.Model):
 
     id= db.Column(db.Integer,primary_key=True)
     couple_id= db.Column(db.Integer, db.ForeignKey('couple_profile.id'),nullable=False)
+    event_name  = db.Column(db.String(100)) 
     event_date=db.Column(db.DateTime)
     phase_name= db.Column(db.String(50))
     phase_emoji = db.Column(db.String(10))

@@ -67,7 +67,7 @@ def register():
 def login():
     # if already logged in send to dashboard
     if current_user.is_authenticated:
-        return redirect(url_for('memory.dashboaed'))
+        return redirect(url_for('memory.dashboard'))
     
     if request.method=='POST':
         email= request.form.get('email')

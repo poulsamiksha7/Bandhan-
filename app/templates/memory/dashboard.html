@@ -1,33 +1,81 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="dashboard-container">
+    <!-- header -->
     <div class="dashboard-header">
         <h1>🌙{{couple.bride_name}} & {{couple.groom_name}}</h1>
         <p>{{couple.their_story}}</p>
         <a href="/logout" class="logout-btn">Logout</a>
     </div>
 
-    <div class="memory-grid">
-        <div class="memory-card coming-soon">
-            <span class="card-icon">🌙</span>
-            <h3>Moon Memory</h3>
-            <p>Coming Soon</p>
+    {% if moon_data %}
+    <div class="moon-section">
+        <div class="moon-card">
+            <div class="moon-emoji">{{moon_data.phase_emoji}}</div>
+            <div class="moon-info">
+                <p class="moon-label">The moon on your wedding day</p>
+                <h2 class="moon-phase">{{moon_data.phase_name}}</h2>
+                <p class="moon_data">
+                    {{moon_data.event_date.strftime('%B %d, %Y')}}
+                </p>
+                <p class="moon-meaning">
+                    "{{ moon_data.phase_emoji }} {{ moon_data.phase_name }} — 
+                    {% if moon_data.phase_name == 'New Moon' %}
+                        A new beginning. The perfect night to start your forever.
+                    {% elif moon_data.phase_name == 'Waxing Crescent' %}
+                        Intentions growing. Love quietly building toward something beautiful.
+                    {% elif moon_data.phase_name == 'First Quarter' %}
+                        Halfway to fullness. Challenges faced, commitments made.
+                    {% elif moon_data.phase_name == 'Waxing Gibbous' %}
+                        Almost there. The universe was preparing for this moment.
+                    {% elif moon_data.phase_name == 'Full Moon' %}
+                        Complete. Whole. Your love illuminated the entire sky that night.
+                    {% elif moon_data.phase_name == 'Waning Gibbous' %}
+                        Gratitude moon. A night for counting every blessing.
+                    {% elif moon_data.phase_name == 'Last Quarter' %}
+                        Reflection moon. Releasing the old, making room for forever.
+                    {% else %}
+                        Surrender moon. Trusting the universe with your story.
+                    {% endif %}"
+                </p>
+            </div>
         </div>
+        {% else %}
+        <div class="moon-section">
+            <div class="moon-card no-date">
+                <div class="moon-emoji">🌑</div>
+                <div class="moon-info">
+                    <p class="moon-label">Add your wedding date to see your moon</p>
+                    <a href="/profile/edit" class="btn-soft">Add Wedding Date</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+
+    <div class="memory-grid">
+
 
         <div class="memory-card coming-soon">
             <span class="card-icon">🎵</span>
             <h3>Song Dedication</h3>
-            <p>Coming Soon</p>
+            <p>Coming DAY6</p>
         </div>
         <div class="memory-card coming-soon">
             <span class="card-icon">📖</span>
             <h3>Book of Your Month</h3>
-            <p>Coming Soon</p>
+            <p>Coming Day9</p>
+        </div>
+        <div class="memory-card coming-soon">
+            <span class="card-icon">💌</span>
+            <h3>Book Quote</h3>
+            <p>Coming Day11</p>
         </div>
         <div class="memory-card coming-soon">
             <span class="card-icon">💌</span>
             <h3>Private Journal</h3>
-            <p>Coming Soonz</p>
+            <p>Coming Day 12</p>
         </div>
     </div>
 </div>
