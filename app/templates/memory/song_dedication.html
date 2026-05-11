@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="song-container">
+
+    <div class="song-header">
+        <a href="/dashboard" class="back-link">← Back to our space</a>
+        <h1>🎵 Song Dedication</h1>
+        <p>Search a song. Find the one line that says everything.</p>
+    </div>
+
+    {% with messages=get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- SEARCH FORM -->
+    <form method="POST" action="/song-dedication" class="search-form">
+        <input type="hidden" name="action" value="search">
+        <div class="search-row">
+            <div class="form-group">
+                <label>Song Name</label>
+                <input type="text" name="song_name"
+                       placeholder="e.g. Tujhe Dekha To"
+                       value="{{ song_name or '' }}" required>
+            </div>
+            <div class="form-group">
+                <label>Artist / Singer</label>
+                <input type="text" name="artist_name"
+                       placeholder="e.g. Kumar Sanu"
+                       value="{{ artist_name or '' }}" required>
+            </div>
+            <button type="submit" class="btn-search">Find Lyrics 🎵</button>
+        </div>
+    </form>
+
+    <!-- LYRICS DISPLAY -->
+    {% if lines %}
+    <div class="lyrics-section">
+        <div class="lyrics-info">
+            <h2>{{ song_name }}</h2>
+            <p>{{ artist_name }}</p>
+            <p class="lyrics-hint">
+                👆 Click on a line that speaks to your heart
+            </p>
+        </div>
+
+        <form method="POST" action="/song-dedication" id="dedication-form">
+            <input type="hidden" name="action" value="save">
+            <input type="hidden" name="song_name" value="{{ song_name }}">
+            <input type="hidden" name="artist_name" value="{{ artist_name }}">
+            <input type="hidden" name="highlighted_line" id="highlighted-line" value="">
+
+            <div class="lyrics-lines">
+                {% for line in lines %}
+                <div class="lyric-line" data-line="{{ line }}" onclick="selectLine(this)">
+                    {{ line }}
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- selected line preview -->
+            <div class="selected-preview" id="selected-preview" style="display:none;">
+                <p class="preview-label">Your chosen line:</p>
+                <p class="preview-line" id="preview-text"></p>
+
+                <div class="dedication-who">
+                    <p>This dedication is from:</p>
+                    <div class="who-buttons">
+                        <label class="who-btn">
+                            <input type="radio" name="dedicated_by"
+                                   value="bride" required>
+                            <span>{{ current_user.bride_name }} (Bride)</span>
+                        </label>
+                        <label class="who-btn">
+                            <input type="radio" name="dedicated_by"
+                                   value="groom">
+                            <span>{{ current_user.groom_name }} (Groom)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    Save This Dedication 🌙
+                </button>
+            </div>
+
+        </form>
+    </div>
+    {% endif %}
+
+</div>
+
+<script>
+function selectLine(element) {
+    document.querySelectorAll('.lyric-line').forEach(function(el) {
+        el.classList.remove('selected');
+    });
+
+    element.classList.add('selected');
+
+    var lineText = element.getAttribute('data-line');
+
+    document.getElementById('highlighted-line').value = lineText;
+    document.getElementById('preview-text').textContent = '"' + lineText + '"';
+    document.getElementById('selected-preview').style.display = 'block';
+
+    document.getElementById('selected-preview').scrollIntoView({
+        behavior: 'smooth'
+    });
+}
+</script>
+
+{% endblock %}
