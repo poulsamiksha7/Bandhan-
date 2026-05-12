@@ -510,3 +510,93 @@ a.memory-card {
 .who-btn input[type="radio"] {
     accent-color: #c9b8ff;
 }
+
+/* ── SONG DEDICATIONS ON DASHBOARD ── */
+.dedications-section {
+    margin-bottom: 48px;
+}
+
+.dedications-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.dedication-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(201, 184, 255, 0.2);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.3s;
+}
+
+.dedication-card:hover {
+    border-color: rgba(201, 184, 255, 0.4);
+    background: rgba(201, 184, 255, 0.04);
+}
+
+.empty-card {
+    opacity: 0.6;
+    border-style: dashed;
+}
+
+.dedication-from {
+    color: #9980c9;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.dedication-song {
+    margin-bottom: 16px;
+}
+
+.song-title {
+    color: #c9b8ff;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.song-artist {
+    color: #9980c9;
+    font-size: 0.85rem;
+}
+
+.dedication-line {
+    color: #f0e6ff;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    border-left: 2px solid rgba(201, 184, 255, 0.4);
+    padding-left: 14px;
+    margin-bottom: 16px;
+}
+
+.quote-mark {
+    color: rgba(201, 184, 255, 0.5);
+    font-size: 1.1rem;
+}
+
+.change-link {
+    color: #7a6b99;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.change-link:hover {
+    color: #c9b8ff;
+}
+
+.empty-dedication {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.empty-dedication p {
+    color: #7a6b99;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}

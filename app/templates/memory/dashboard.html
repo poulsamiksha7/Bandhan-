@@ -8,15 +8,16 @@
         <a href="/logout" class="logout-btn">Logout</a>
     </div>
 
+    <!-- Moon Section -->
     {% if moon_data %}
     <div class="moon-section">
         <div class="moon-card">
-            <div class="moon-emoji">{{moon_data.phase_emoji}}</div>
+            <div class="moon-emoji">{{ moon_data.phase_emoji }}</div>
             <div class="moon-info">
                 <p class="moon-label">The moon on your wedding day</p>
-                <h2 class="moon-phase">{{moon_data.phase_name}}</h2>
-                <p class="moon_data">
-                    {{moon_data.event_date.strftime('%B %d, %Y')}}
+                <h2 class="moon-phase">{{ moon_data.phase_name }}</h2>
+                <p class="moon-date">
+                    {{ moon_data.event_date.strftime('%B %d, %Y') }}
                 </p>
                 <p class="moon-meaning">
                     "{{ moon_data.phase_emoji }} {{ moon_data.phase_name }} — 
@@ -40,46 +41,95 @@
                 </p>
             </div>
         </div>
-        {% else %}
-        <div class="moon-section">
-            <div class="moon-card no-date">
-                <div class="moon-emoji">🌑</div>
-                <div class="moon-info">
-                    <p class="moon-label">Add your wedding date to see your moon</p>
-                    <a href="/profile/edit" class="btn-soft">Add Wedding Date</a>
-                </div>
+    </div>
+    {% else %}
+    <div class="moon-section">
+        <div class="moon-card no-date">
+            <div class="moon-emoji">🌑</div>
+            <div class="moon-info">
+                <p class="moon-label">Add your wedding date to see your moon</p>
+                <a href="/profile/edit" class="btn-soft">Add Wedding Date</a>
             </div>
         </div>
-        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Song Dedications Section -->
+    <div class="dedications-section">
+        <h3 class="section-title">🎵 Your Song Dedications</h3>
+        <div class="dedications-grid">
+
+            <!-- Bride's Dedication -->
+            <div class="dedication-card {% if not bride_dedication %}empty-card{% endif %}">
+                <p class="dedication-from">From {{ couple.bride_name }}</p>
+                {% if bride_dedication %}
+                    <div class="dedication-song">
+                        <p class="song-title">{{ bride_dedication.song_name }}</p>
+                        <p class="song-artist">{{ bride_dedication.artist_name }}</p>
+                    </div>
+                    <div class="dedication-line">
+                        <span class="quote-mark">"</span>
+                        {{ bride_dedication.highlighted_line }}
+                        <span class="quote-mark">"</span>
+                    </div>
+                    <a href="/song-dedication" class="change-link">Change dedication</a>
+                {% else %}
+                    <div class="empty-dedication">
+                        <p>No dedication yet</p>
+                        <a href="/song-dedication" class="btn-soft">Add dedication 🎵</a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Groom's Dedication -->
+            <div class="dedication-card {% if not groom_dedication %}empty-card{% endif %}">
+                <p class="dedication-from">From {{ couple.groom_name }}</p>
+                {% if groom_dedication %}
+                    <div class="dedication-song">
+                        <p class="song-title">{{ groom_dedication.song_name }}</p>
+                        <p class="song-artist">{{ groom_dedication.artist_name }}</p>
+                    </div>
+                    <div class="dedication-line">
+                        <span class="quote-mark">"</span>
+                        {{ groom_dedication.highlighted_line }}
+                        <span class="quote-mark">"</span>
+                    </div>
+                    <a href="/song-dedication" class="change-link">Change dedication</a>
+                {% else %}
+                    <div class="empty-dedication">
+                        <p>No dedication yet</p>
+                        <a href="/song-dedication" class="btn-soft">Add dedication 🎵</a>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
     </div>
 
-
+    <!-- Memory Cards Grid -->
+    <h3 class="section-title">Your Memory Space</h3>
     <div class="memory-grid">
-
-
-        <div class="memory-card coming-soon">
+        <a href="/song-dedication" class="memory-card">
             <span class="card-icon">🎵</span>
-            <a href="/song-dedication" class="memory-card">
-                <span class="card-icon">🎵</span>
-                <h3>Song Dedication</h3>
-                <p>Find the one line that says it all</p>
-            </a>
-        </div>
+            <h3>Song Dedication</h3>
+            <p>Find the one line that says it all</p>
+        </a>
         <div class="memory-card coming-soon">
             <span class="card-icon">📖</span>
             <h3>Book of Your Month</h3>
-            <p>Coming Day9</p>
+            <p>Coming Day 8</p>
         </div>
         <div class="memory-card coming-soon">
-            <span class="card-icon">💌</span>
+            <span class="card-icon">💬</span>
             <h3>Book Quote</h3>
-            <p>Coming Day11</p>
+            <p>Coming Day 10</p>
         </div>
         <div class="memory-card coming-soon">
             <span class="card-icon">💌</span>
             <h3>Private Journal</h3>
-            <p>Coming Day 12</p>
+            <p>Coming Day 11</p>
         </div>
     </div>
-</div>
+
+
 {% endblock %}

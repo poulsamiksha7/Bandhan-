@@ -41,10 +41,23 @@ def dashboard():
                 db.session.rollback()
                 print("MOON ERROR:", str(e))
 
+    # fetch song dedications
+    bride_dedication=SongDedication.query.filter_by(
+        couple_id=current_user.id,
+        dedicated_by='bride'
+    ).first()
+
+    groom_dedication=SongDedication.query.filter_by(
+        couple_id=current_user.id,
+        dedicated_by='groom'
+    ).first()
+
     return render_template(
         'memory/dashboard.html',
-        couple    = current_user,
-        moon_data = moon_data
+        couple            = current_user,
+        moon_data         = moon_data,
+        bride_dedication = bride_dedication,
+        groom_dedication = groom_dedication
     )
 
 @memory.route('/song-dedication', methods=['GET', 'POST'])
