@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="book-container">
+
+    <div class="book-header">
+        <a href="/dashboard" class="back-link">← Back to our space</a>
+        <h1>📖 Book of Your Month</h1>
+        <p class="book-subtitle">
+            In the month you said yes — these books entered the world.
+        </p>
+    </div>
+
+    {% with messages=get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if books %}
+
+    <div class="month-label">
+        <span>
+            {% set month_names = ['', 'January', 'February', 'March', 'April',
+                                  'May', 'June', 'July', 'August', 'September',
+                                  'October', 'November', 'December'] %}
+            {{ month_names[wedding_month] }} {{ wedding_year }}
+        </span>
+    </div>
+
+    <div class="books-grid">
+        {% for book in books %}
+        <div class="book-card">
+
+            <!-- Book Cover -->
+            <div class="book-cover-wrap">
+                {% if book.cover_url %}
+                    <img src="{{ book.cover_url }}"
+                         alt="{{ book.title }}"
+                         class="book-cover">
+                {% else %}
+                    <div class="book-cover-placeholder">
+                        <span>📖</span>
+                        <p>No cover available</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Book Info -->
+            <div class="book-info">
+                <p class="book-lang-badge">
+                    {% if book.language == 'en' %}English
+                    {% elif book.language == 'hi' %}Hindi
+                    {% elif book.language == 'mr' %}Marathi
+                    {% endif %}
+                </p>
+                <h2 class="book-title">{{ book.title }}</h2>
+                <p class="book-author">by {{ book.author }}</p>
+
+                <p class="book-note">
+                    "This book was born in the same month
+                    your forever began."
+                </p>
+
+                <a href="{{ book.buy_link }}"
+                   target="_blank"
+                   class="btn-primary book-btn">
+                    Read More →
+                </a>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+
+    <!-- Empty State -->
+    <div class="book-empty">
+        <p class="empty-emoji">📖</p>
+        <h2>No books found for {{ wedding_month }}/{{ wedding_year }}</h2>
+        <p>The API couldn't find a match for your wedding month.</p>
+        <p>Try updating your language preference or check back later.</p>
+        <a href="/dashboard" class="btn-soft">Back to Dashboard</a>
+    </div>
+
+    {% endif %}
+
+</div>
+{% endblock %}

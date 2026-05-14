@@ -2,11 +2,12 @@
 from flask import Blueprint, render_template, redirect,url_for,flash, request
 from flask_login import login_required, current_user
 from app import db
-from app.models import MoonMemory
-from app.utils import get_moon_phase, get_moon_meaning
-from app.models import MoonMemory, SongDedication
+from app.models import MoonMemory, SongDedication,BookMemory
+from app.utils import get_moon_phase, get_moon_meaning,get_book_for_wedding_month
 from datetime import datetime
 import requests
+
+
 
 memory = Blueprint('memory', __name__)
 @memory.route('/dashboard')
@@ -147,3 +148,79 @@ def song_dedication():
                            lines       = None,
                            song_name   = None,
                            artist_name = None)
+
+@memory.route('/book-memory')
+@login_required
+def book_memory():
+    # must have wedding date
+    if not current_user.wedding_date:
+        flash('Please add your wedding date first','error')
+        return redirect(url_for('memory.dashboard'))
+    
+    wedding_month=current_user.wedding_date.month
+    wedding_year=current_user.wedding_date.year
+    language=current_user.language
+
+    # check if alreafdy saved
+    existing_books=BookMemory.query.filter_by(
+        couple_id=current_user.id
+    ).all()
+
+    if existing_books:
+        # already fetched show saved _books
+        return render_template(
+            'memory/book_memory.html',
+            books=existing_books,
+            wedding_month=wedding_month,
+            wedding_year=wedding_year,
+            already_saved=True
+        )
+    
+    # fetch from Google Books API
+    books_data=get_book_for_wedding_month(
+        wedding_month,
+        wedding_year,
+        language
+    )
+
+    if not books_data:
+        # API returned nothing-show empty state
+        return render_template(
+            'memory/book_memory.html',
+            books=None,
+            wedding_month=wedding_month,
+            wedding_year=wedding_year,
+            already_saved=False
+        )
+    
+    # save each book to database
+    saved_books=[]
+    for book in books_data:
+        new_book=BookMemory(
+            couple_id=current_user.id,
+            title=book['title'],
+            author=book['author'],
+            cover_url=book['cover_url'],
+            buy_link=book['buy_link'],
+            language=book['language'],
+            wedding_month=wedding_month,
+            wedding_year=wedding_year
+        )
+
+        db.session.add(new_book)
+        saved_books.append(new_book)
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print("BOOK SAVE ERROR: ", str(e))
+
+    return render_template(
+        'memory/book_memory.html',
+        books=saved_books,
+        wedding_month=wedding_month,
+        wedding_year=wedding_year,
+        already_saved=False
+    )
+

@@ -600,3 +600,160 @@ a.memory-card {
     font-size: 0.9rem;
     margin-bottom: 12px;
 }
+/* ── BOOK MEMORY ── */
+.book-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.book-header {
+    margin-bottom: 36px;
+}
+
+.book-header h1 {
+    color: #c9b8ff;
+    font-size: 1.8rem;
+    margin: 12px 0 8px;
+}
+
+.book-subtitle {
+    color: #9980c9;
+    font-style: italic;
+    font-size: 0.95rem;
+}
+
+.month-label {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.month-label span {
+    background: rgba(201, 184, 255, 0.1);
+    border: 1px solid rgba(201, 184, 255, 0.2);
+    border-radius: 20px;
+    padding: 6px 20px;
+    color: #c9b8ff;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 32px;
+}
+
+.book-card {
+    display: flex;
+    gap: 28px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(201, 184, 255, 0.15);
+    border-radius: 20px;
+    padding: 28px;
+    transition: all 0.3s;
+}
+
+.book-card:hover {
+    border-color: rgba(201, 184, 255, 0.35);
+    transform: translateY(-4px);
+}
+
+.book-cover-wrap {
+    flex-shrink: 0;
+}
+
+.book-cover {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.book-cover-placeholder {
+    width: 100px;
+    height: 150px;
+    background: rgba(201, 184, 255, 0.08);
+    border: 1px solid rgba(201, 184, 255, 0.15);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 2rem;
+}
+
+.book-cover-placeholder p {
+    color: #7a6b99;
+    font-size: 0.7rem;
+    text-align: center;
+}
+
+.book-info {
+    flex: 1;
+}
+
+.book-lang-badge {
+    display: inline-block;
+    background: rgba(201, 184, 255, 0.1);
+    color: #9980c9;
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.book-title {
+    color: #c9b8ff;
+    font-size: 1.15rem;
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+.book-author {
+    color: #9980c9;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.book-note {
+    color: #7a6b99;
+    font-style: italic;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    border-left: 2px solid rgba(201, 184, 255, 0.2);
+    padding-left: 12px;
+}
+
+.book-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-radius: 8px;
+    width: auto;
+}
+
+.book-empty {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-emoji {
+    font-size: 4rem;
+    margin-bottom: 16px;
+}
+
+.book-empty h2 {
+    color: #c9b8ff;
+    margin-bottom: 12px;
+}
+
+.book-empty p {
+    color: #9980c9;
+    margin-bottom: 8px;
+}
