@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="journal-container">
+
+    <div class="journal-header">
+        <a href="/dashboard" class="back-link">← Back to our space</a>
+        <h1>💌 Private Journal</h1>
+        <p>Letters only you two can read.</p>
+        <div class="tonight-moon">
+            Tonight's moon: {{ moon_emoji }} {{ moon_phase }}
+        </div>
+    </div>
+
+    {% with messages=get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- WRITE ENTRY FORM -->
+    <div class="journal-form-section">
+        <h3 class="section-title">✍️ Write a Letter</h3>
+
+        <form method="POST" action="/journal" class="journal-form">
+
+            <div class="form-group">
+                <textarea name="content"
+                          rows="6"
+                          placeholder="Dear {{ current_user.groom_name }} / {{ current_user.bride_name }}, 
+
+Write what you feel tonight..."
+                          required></textarea>
+            </div>
+
+            <div class="journal-footer-row">
+                <div class="who-buttons">
+                    <label class="who-btn">
+                        <input type="radio" name="written_by"
+                               value="bride" required>
+                        <span>{{ current_user.bride_name }}</span>
+                    </label>
+                    <label class="who-btn">
+                        <input type="radio" name="written_by"
+                               value="groom">
+                        <span>{{ current_user.groom_name }}</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn-primary journal-btn">
+                    Save Letter 💌
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- ENTRIES LIST -->
+    {% if entries %}
+    <div class="entries-section">
+        <h3 class="section-title">📜 Your Letters</h3>
+
+        {% for entry in entries %}
+        <div class="journal-entry-card">
+            <div class="entry-header">
+                <div class="entry-meta">
+                    <span class="entry-author">
+                        {% if entry.written_by == 'bride' %}
+                            {{ current_user.bride_name }}
+                        {% else %}
+                            {{ current_user.groom_name }}
+                        {% endif %}
+                    </span>
+                    <span class="entry-moon">
+                        {{ entry.moon_phase }}
+                    </span>
+                </div>
+                <span class="entry-date">
+                    {{ entry.created_at.strftime('%B %d, %Y · %I:%M %p') }}
+                </span>
+            </div>
+            <div class="entry-content">
+                {{ entry.content }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="journal-empty">
+        <p class="empty-emoji">💌</p>
+        <p>No letters yet.</p>
+        <p>Write the first one tonight.</p>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

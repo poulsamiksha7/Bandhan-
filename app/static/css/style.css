@@ -897,3 +897,148 @@ a.memory-card {
     max-width: 500px;
     margin: 0 auto;
 }
+/* ── JOURNAL ── */
+.journal-container {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.journal-header {
+    margin-bottom: 36px;
+}
+
+.journal-header h1 {
+    color: #c9b8ff;
+    font-size: 1.8rem;
+    margin: 12px 0 8px;
+}
+
+.journal-header p {
+    color: #9980c9;
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
+.tonight-moon {
+    display: inline-block;
+    margin-top: 12px;
+    background: rgba(201, 184, 255, 0.08);
+    border: 1px solid rgba(201, 184, 255, 0.2);
+    border-radius: 20px;
+    padding: 6px 16px;
+    color: #c9b8ff;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.journal-form-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(201, 184, 255, 0.1);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 40px;
+}
+
+.journal-form textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(201, 184, 255, 0.2);
+    border-radius: 8px;
+    padding: 16px;
+    color: #f0e6ff;
+    font-size: 0.95rem;
+    font-family: Georgia, serif;
+    line-height: 1.7;
+    resize: vertical;
+    outline: none;
+    transition: border 0.2s;
+    margin-bottom: 16px;
+}
+
+.journal-form textarea:focus {
+    border-color: #c9b8ff;
+}
+
+.journal-footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.journal-btn {
+    width: auto;
+    padding: 12px 24px;
+}
+
+.entries-section {
+    margin-top: 8px;
+}
+
+.journal-entry-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(201, 184, 255, 0.12);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+}
+
+.journal-entry-card:hover {
+    border-color: rgba(201, 184, 255, 0.25);
+}
+
+.entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.entry-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.entry-author {
+    color: #c9b8ff;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.entry-moon {
+    color: #9980c9;
+    font-size: 0.8rem;
+}
+
+.entry-date {
+    color: #7a6b99;
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+.entry-content {
+    color: #d4c8f0;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    font-family: Georgia, serif;
+    white-space: pre-wrap;
+}
+
+.journal-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #9980c9;
+}
+
+.journal-empty .empty-emoji {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.journal-empty p {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}

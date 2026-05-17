@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from app import db
-from app.models import MoonMemory, SongDedication, BookMemory
+from app.models import MoonMemory, SongDedication, BookMemory, JournalEntry
 from app.utils import (get_moon_phase, get_moon_meaning,
                        get_book_for_wedding_month,
                        get_wedding_weather, get_wedding_stars,
@@ -246,4 +246,59 @@ def wedding_night():
         weather      = weather,
         stars        = stars,
         rain_meaning = rain_meaning
+    )
+
+@memory.route('/journal', methods=['GET','POST'])
+@login_required
+def journal():
+    if request.method=='POST':
+        content= request.form.get('content','').strip()
+        written_by=request.form.get('written_by')
+
+        if not content:
+            flash('Please write something before saving.','error')
+            return redirect(url_for('memory.journal'))
+        
+        if not written_by:
+            flash('Please select who is writing','error')
+            return redirect(url_for('memory.journal'))
+        
+        # get tonight moon phase
+        from datetime import datetime
+        tonight=datetime.utcnow()
+        emoji,phase_name=get_moon_phase(tonight)
+
+        entry=JournalEntry(
+            couple_id=current_user.id,
+            written_by=written_by,
+            content=content,
+            moon_phase=phase_name,
+            is_private=True
+        )
+
+        try:
+            db.session.add(entry)
+            db.session.commit()
+            flash('Your letter has been saved 💌','success')
+            return redirect(url_for('memory.journal'))
+        except Exception as e:
+            db.session.rollback()
+            print("JOURNAL ERROR: ",str(e))
+            flash('Could not save. Please try again.','error')
+
+    # fetch all entries for this couple
+    entries=JournalEntry.query.filter_by(
+        couple_id=current_user.id
+    ).order_by(JournalEntry.created_at.desc()).all()
+
+    # get tonight's moon for display
+    from datetime import datetime
+    tonight=datetime.utcnow()
+    emoji,phase_name=get_moon_phase(tonight)
+
+    return render_template(
+        'memory/journal.html',
+        entries=entries,
+        moon_emoji=emoji,
+        moon_phase=phase_name
     )
