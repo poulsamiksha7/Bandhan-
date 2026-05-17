@@ -1,15 +1,18 @@
-# memory.py
-from flask import Blueprint, render_template, redirect,url_for,flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from app import db
-from app.models import MoonMemory, SongDedication,BookMemory
-from app.utils import get_moon_phase, get_moon_meaning,get_book_for_wedding_month
+from app.models import MoonMemory, SongDedication, BookMemory
+from app.utils import (get_moon_phase, get_moon_meaning,
+                       get_book_for_wedding_month,
+                       get_wedding_weather, get_wedding_stars,
+                       get_rain_meaning)
 from datetime import datetime
 import requests
 
 
-
 memory = Blueprint('memory', __name__)
+
+
 @memory.route('/dashboard')
 @login_required
 def dashboard():
@@ -25,7 +28,6 @@ def dashboard():
             moon_data = existing_moon
         else:
             emoji, phase_name = get_moon_phase(current_user.wedding_date)
-
             new_moon = MoonMemory(
                 couple_id   = current_user.id,
                 event_name  = 'wedding night',
@@ -33,7 +35,6 @@ def dashboard():
                 phase_name  = phase_name,
                 phase_emoji = emoji
             )
-
             try:
                 db.session.add(new_moon)
                 db.session.commit()
@@ -42,24 +43,24 @@ def dashboard():
                 db.session.rollback()
                 print("MOON ERROR:", str(e))
 
-    # fetch song dedications
-    bride_dedication=SongDedication.query.filter_by(
-        couple_id=current_user.id,
-        dedicated_by='bride'
+    bride_dedication = SongDedication.query.filter_by(
+        couple_id    = current_user.id,
+        dedicated_by = 'bride'
     ).first()
 
-    groom_dedication=SongDedication.query.filter_by(
-        couple_id=current_user.id,
-        dedicated_by='groom'
+    groom_dedication = SongDedication.query.filter_by(
+        couple_id    = current_user.id,
+        dedicated_by = 'groom'
     ).first()
 
     return render_template(
         'memory/dashboard.html',
-        couple            = current_user,
-        moon_data         = moon_data,
+        couple           = current_user,
+        moon_data        = moon_data,
         bride_dedication = bride_dedication,
         groom_dedication = groom_dedication
     )
+
 
 @memory.route('/song-dedication', methods=['GET', 'POST'])
 @login_required
@@ -67,8 +68,8 @@ def song_dedication():
     if request.method == 'POST':
         action = request.form.get('action')
 
-        if action == 'search':        # ← 8 spaces indent (inside POST)
-            song_name = request.form.get('song_name', '').strip()
+        if action == 'search':
+            song_name   = request.form.get('song_name', '').strip()
             artist_name = request.form.get('artist_name', '').strip()
 
             if not song_name or not artist_name:
@@ -76,7 +77,7 @@ def song_dedication():
                 return redirect(url_for('memory.song_dedication'))
 
             try:
-                url = f"https://api.lyrics.ovh/v1/{artist_name}/{song_name}"
+                url      = f"https://api.lyrics.ovh/v1/{artist_name}/{song_name}"
                 response = requests.get(url, timeout=10)
 
                 if response.status_code == 200:
@@ -105,7 +106,7 @@ def song_dedication():
                 flash('Could not fetch lyrics. Please try again.', 'error')
                 return redirect(url_for('memory.song_dedication'))
 
-        elif action == 'save':        # ← 8 spaces indent (inside POST)
+        elif action == 'save':
             song_name        = request.form.get('song_name')
             artist_name      = request.form.get('artist_name')
             highlighted_line = request.form.get('highlighted_line')
@@ -143,70 +144,63 @@ def song_dedication():
                 print("SAVE ERROR:", str(e))
                 flash('Could not save. Please try again.', 'error')
 
-    # GET request — outside POST block, 4 spaces indent
     return render_template('memory/song_dedication.html',
                            lines       = None,
                            song_name   = None,
                            artist_name = None)
 
+
 @memory.route('/book-memory')
 @login_required
 def book_memory():
-    # must have wedding date
     if not current_user.wedding_date:
-        flash('Please add your wedding date first','error')
+        flash('Please add your wedding date first.', 'error')
         return redirect(url_for('memory.dashboard'))
-    
-    wedding_month=current_user.wedding_date.month
-    wedding_year=current_user.wedding_date.year
-    language=current_user.language
 
-    # check if alreafdy saved
-    existing_books=BookMemory.query.filter_by(
-        couple_id=current_user.id
+    wedding_month = current_user.wedding_date.month
+    wedding_year  = current_user.wedding_date.year
+    language      = current_user.language
+
+    existing_books = BookMemory.query.filter_by(
+        couple_id = current_user.id
     ).all()
 
     if existing_books:
-        # already fetched show saved _books
         return render_template(
             'memory/book_memory.html',
-            books=existing_books,
-            wedding_month=wedding_month,
-            wedding_year=wedding_year,
-            already_saved=True
+            books         = existing_books,
+            wedding_month = wedding_month,
+            wedding_year  = wedding_year,
+            already_saved = True
         )
-    
-    # fetch from Google Books API
-    books_data=get_book_for_wedding_month(
+
+    books_data = get_book_for_wedding_month(
         wedding_month,
         wedding_year,
         language
     )
 
     if not books_data:
-        # API returned nothing-show empty state
         return render_template(
             'memory/book_memory.html',
-            books=None,
-            wedding_month=wedding_month,
-            wedding_year=wedding_year,
-            already_saved=False
-        )
-    
-    # save each book to database
-    saved_books=[]
-    for book in books_data:
-        new_book=BookMemory(
-            couple_id=current_user.id,
-            title=book['title'],
-            author=book['author'],
-            cover_url=book['cover_url'],
-            buy_link=book['buy_link'],
-            language=book['language'],
-            wedding_month=wedding_month,
-            wedding_year=wedding_year
+            books         = None,
+            wedding_month = wedding_month,
+            wedding_year  = wedding_year,
+            already_saved = False
         )
 
+    saved_books = []
+    for book in books_data:
+        new_book = BookMemory(
+            couple_id     = current_user.id,
+            title         = book['title'],
+            author        = book['author'],
+            cover_url     = book['cover_url'],
+            buy_link      = book['buy_link'],
+            language      = book['language'],
+            wedding_month = wedding_month,
+            wedding_year  = wedding_year
+        )
         db.session.add(new_book)
         saved_books.append(new_book)
 
@@ -214,13 +208,42 @@ def book_memory():
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        print("BOOK SAVE ERROR: ", str(e))
+        print("BOOK SAVE ERROR:", str(e))
 
     return render_template(
         'memory/book_memory.html',
-        books=saved_books,
-        wedding_month=wedding_month,
-        wedding_year=wedding_year,
-        already_saved=False
+        books         = saved_books,
+        wedding_month = wedding_month,
+        wedding_year  = wedding_year,
+        already_saved = False
     )
 
+
+@memory.route('/wedding-night')
+@login_required
+def wedding_night():
+    if not current_user.wedding_date:
+        flash('Please add your wedding date first.', 'error')
+        return redirect(url_for('memory.dashboard'))
+
+    moon_data = MoonMemory.query.filter_by(
+        couple_id  = current_user.id,
+        event_name = 'wedding night'
+    ).first()
+
+    city        = current_user.city or 'India'
+    weather     = get_wedding_weather(current_user.wedding_date, city)
+    stars       = get_wedding_stars(current_user.wedding_date)
+    rain_meaning = None
+
+    if weather:
+        rain_meaning = get_rain_meaning(weather['weathercode'])
+
+    return render_template(
+        'memory/wedding_night.html',
+        couple       = current_user,
+        moon_data    = moon_data,
+        weather      = weather,
+        stars        = stars,
+        rain_meaning = rain_meaning
+    )

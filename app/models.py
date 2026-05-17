@@ -14,6 +14,7 @@ class CoupleProfile(UserMixin,db.Model):
     their_story=db.Column(db.Text,nullable=True)
     language=db.Column(db.String(20),default='english')
     created_at=db.Column(db.DateTime,default=datetime.utcnow)
+    city=db.Column(db.String(100),nullable=True)
 
 class MoonMemory(db.Model):
     __tablename__='moon_memory'

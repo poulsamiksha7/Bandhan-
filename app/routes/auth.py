@@ -21,6 +21,7 @@ def register():
         wedding_date=request.form.get('wedding_date')
         their_story=request.form.get('their_story')
         language=request.form.get('language')
+        city=request.form.get('city')
 
         #check if email already exists
 
@@ -39,7 +40,8 @@ def register():
             email=email,
             password=hashed_password,
             their_story=their_story,
-            language=language
+            language=language,
+            city=city
         )
 
         #handle wedding date

@@ -757,3 +757,143 @@ a.memory-card {
     color: #9980c9;
     margin-bottom: 8px;
 }
+/* ── WEDDING NIGHT PAGE ── */
+.night-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.night-header {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.night-header h1 {
+    color: #c9b8ff;
+    font-size: 2rem;
+    margin: 12px 0 8px;
+}
+
+.night-subtitle {
+    color: #9980c9;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+}
+
+.night-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.night-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(201, 184, 255, 0.15);
+    border-radius: 20px;
+    padding: 32px;
+    transition: all 0.3s;
+}
+
+.night-card:hover {
+    border-color: rgba(201, 184, 255, 0.35);
+    transform: translateY(-3px);
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.night-card-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    animation: moonGlow 3s ease-in-out infinite;
+}
+
+.night-card-label {
+    color: #9980c9;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.night-card-title {
+    color: #c9b8ff;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+}
+
+.constellation-title {
+    color: #9980c9;
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+.night-temp {
+    color: #b8a8e0;
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.night-card-desc {
+    color: #9980c9;
+    font-style: italic;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    border-left: 2px solid rgba(201, 184, 255, 0.2);
+    padding-left: 12px;
+    margin-top: 12px;
+}
+
+.stars-content {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+}
+
+.constellation-visual {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+}
+
+.star {
+    position: absolute;
+    color: #c9b8ff;
+    animation: starTwinkle 2s ease-in-out infinite;
+}
+
+.s1 { top: 10%; left: 50%; font-size: 1.2rem; animation-delay: 0s; }
+.s2 { top: 40%; left: 15%; font-size: 0.8rem; animation-delay: 0.4s; }
+.s3 { top: 40%; left: 80%; font-size: 1rem;   animation-delay: 0.8s; }
+.s4 { top: 70%; left: 30%; font-size: 0.7rem; animation-delay: 1.2s; }
+.s5 { top: 70%; left: 65%; font-size: 0.9rem; animation-delay: 1.6s; }
+
+@keyframes starTwinkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.3; transform: scale(0.8); }
+}
+
+.stars-list {
+    color: #7a6b99;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+.night-poem {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid rgba(201, 184, 255, 0.1);
+}
+
+.night-poem p {
+    color: #7a6b99;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 500px;
+    margin: 0 auto;
+}

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="night-container">
+
+    <div class="night-header">
+        <a href="/dashboard" class="back-link">← Back to our space</a>
+        <h1>🌌 The Night You Said Yes</h1>
+        <p class="night-subtitle">
+            {{ couple.bride_name }} & {{ couple.groom_name }} —
+            {{ couple.wedding_date.strftime('%B %d, %Y') }}
+        </p>
+    </div>
+
+    <div class="night-grid">
+
+        <!-- Moon Card -->
+        {% if moon_data %}
+        <div class="night-card moon-night-card">
+            <div class="night-card-icon">{{ moon_data.phase_emoji }}</div>
+            <div class="night-card-info">
+                <p class="night-card-label">The Moon</p>
+                <h2 class="night-card-title">{{ moon_data.phase_name }}</h2>
+                <p class="night-card-desc">
+                    {% if moon_data.phase_name == 'Full Moon' %}
+                        Complete. Whole. Your love illuminated the entire sky.
+                    {% elif moon_data.phase_name == 'Last Quarter' %}
+                        Surrender moon. Trusting the universe with your story.
+                    {% elif moon_data.phase_name == 'New Moon' %}
+                        A new beginning. The perfect night to start your forever.
+                    {% elif moon_data.phase_name == 'Waxing Crescent' %}
+                        Love quietly building toward something beautiful.
+                    {% elif moon_data.phase_name == 'First Quarter' %}
+                        Halfway to fullness. Commitments made under this light.
+                    {% elif moon_data.phase_name == 'Waxing Gibbous' %}
+                        Almost there. The universe was preparing for this moment.
+                    {% elif moon_data.phase_name == 'Waning Gibbous' %}
+                        Gratitude moon. A night for counting every blessing.
+                    {% else %}
+                        The moon watched quietly as you began forever.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Weather Card -->
+        {% if weather %}
+        <div class="night-card weather-night-card">
+            <div class="night-card-icon">{{ weather.emoji }}</div>
+            <div class="night-card-info">
+                <p class="night-card-label">The Weather</p>
+                <h2 class="night-card-title">{{ weather.description }}</h2>
+                <p class="night-temp">
+                    {{ weather.temp_min }}°C — {{ weather.temp_max }}°C
+                </p>
+                {% if rain_meaning %}
+                <p class="night-card-desc">{{ rain_meaning }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Stars Card -->
+        {% if stars %}
+        <div class="night-card stars-night-card full-width">
+            <div class="stars-content">
+                <div class="constellation-visual">
+                    <div class="star s1">✦</div>
+                    <div class="star s2">✦</div>
+                    <div class="star s3">✦</div>
+                    <div class="star s4">✦</div>
+                    <div class="star s5">✦</div>
+                </div>
+                <div class="night-card-info">
+                    <p class="night-card-label">Your Constellation</p>
+                    <h2 class="night-card-title">
+                        {{ stars.name }}
+                        <span class="constellation-title">
+                            — {{ stars.title }}
+                        </span>
+                    </h2>
+                    <p class="stars-list">
+                        Visible stars: {{ stars.stars }}
+                    </p>
+                    <p class="night-card-desc">{{ stars.meaning }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <!-- Bottom Poem -->
+    <div class="night-poem">
+        <p>
+            "The moon held its shape. The stars kept their place.
+            The weather did what it did.
+            And somewhere in all of that —
+            you two said yes."
+        </p>
+    </div>
+
+</div>
+{% endblock %}
